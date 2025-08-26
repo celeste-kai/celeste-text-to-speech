@@ -17,3 +17,15 @@ dev = [
 
 [tool.uv.sources]
 celeste-core = { git = "https://github.com/celeste-kai/celeste-core.git" }
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "ANN", "B", "C4", "T20"]
+ignore = ["ANN401", "ANN101", "ANN102"]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"

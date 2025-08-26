@@ -1,6 +1,6 @@
 from typing import Any
 
-from celeste_core import AudioArtifact
+from celeste_core import AudioArtifact, Provider
 from celeste_core.base.tts_client import BaseTTSClient
 from celeste_core.config.settings import settings
 from google import genai
@@ -11,8 +11,7 @@ class GoogleTTSClient(BaseTTSClient):
     def __init__(
         self, model: str = "gemini-2.5-flash-preview-tts", **kwargs: Any
     ) -> None:
-        super().__init__(**kwargs)
-        self.model_name = model
+        super().__init__(model=model, provider=Provider.GOOGLE, **kwargs)
         self.client = genai.Client(api_key=settings.google.api_key)
 
     async def generate_speech(
@@ -34,7 +33,7 @@ class GoogleTTSClient(BaseTTSClient):
             AudioArtifact with audio data
         """
         response = await self.client.aio.models.generate_content(
-            model=self.model_name,
+            model=self.model,
             contents=text,
             config=types.GenerateContentConfig(
                 response_modalities=["AUDIO"],
