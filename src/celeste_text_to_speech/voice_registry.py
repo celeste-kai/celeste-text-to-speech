@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
-
 from celeste_core.enums.providers import Provider
 
 from .core.language import Language
 from .core.voice import Voice
+from .voice_catalog import VOICE_CATALOG
 
 # Central registry mapping (provider, voice_id) to voice metadata.
-VOICE_REGISTRY: Dict[Tuple[Provider, str], Voice] = {}
+VOICE_REGISTRY: dict[tuple[Provider, str], Voice] = {}
 
 
 def register_voice(voice: Voice) -> None:
@@ -21,14 +20,12 @@ def clear_voice_registry() -> None:
     VOICE_REGISTRY.clear()
 
 
-def get_voice(provider: Provider, voice_id: str) -> Optional[Voice]:
+def get_voice(provider: Provider, voice_id: str) -> Voice | None:
     """Get a specific voice by provider and ID."""
     return VOICE_REGISTRY.get((provider, voice_id))
 
 
-def list_voices(
-    *, provider: Optional[Provider] = None, language: Optional[Language] = None
-) -> List[Voice]:
+def list_voices(*, provider: Provider | None = None, language: Language | None = None) -> list[Voice]:
     """List voices, optionally filtered by provider and/or language support."""
     voices = list(VOICE_REGISTRY.values())
 
@@ -41,11 +38,11 @@ def list_voices(
     return voices
 
 
-def list_voice_providers(*, language: Optional[Language] = None) -> List[Provider]:
+def list_voice_providers(*, language: Language | None = None) -> list[Provider]:
     """Return distinct providers, optionally filtered by language support."""
     if language is None:
         return sorted(
-            {provider for (provider, _voice_id) in VOICE_REGISTRY.keys()},
+            {provider for (provider, _voice_id) in VOICE_REGISTRY},
             key=lambda p: p.value,
         )
 
@@ -54,9 +51,7 @@ def list_voice_providers(*, language: Optional[Language] = None) -> List[Provide
     return sorted(providers, key=lambda p: p.value)
 
 
-def voice_supports_language(
-    provider: Provider, voice_id: str, language: Language
-) -> bool:
+def voice_supports_language(provider: Provider, voice_id: str, language: Language) -> bool:
     """Check if a specific voice supports a language."""
     voice = get_voice(provider, voice_id)
     return bool(voice and voice.supports_language(language))
@@ -69,8 +64,6 @@ def voice_supports_language(
 
 def reload_voice_catalog() -> None:
     """Reload the built-in voice catalog into the registry."""
-    from .voice_catalog import VOICE_CATALOG
-
     clear_voice_registry()
     for voice in VOICE_CATALOG:
         register_voice(voice)
