@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 from celeste_core.enums.providers import Provider
 from pydantic import BaseModel
 
@@ -13,7 +11,7 @@ class Voice(BaseModel):
 
     id: str
     provider: Provider
-    languages: List[Language]  # Supported languages using Language enum
+    languages: list[Language]  # Supported languages using Language enum
     description: str  # Voice characteristics (e.g., "Firm", "Bright", "Excitable")
     display_name: str  # Human-readable name for UI
 

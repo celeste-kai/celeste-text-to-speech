@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 from celeste_core.enums.providers import Provider
 
 from .core.language import Language
@@ -9,7 +7,7 @@ from .core.voice import Voice
 
 # Define voices explicitly to keep per-voice metadata easy to maintain.
 # Contributors can edit this list to add/update voices.
-VOICE_CATALOG: List[Voice] = [
+VOICE_CATALOG: list[Voice] = [
     # Google TTS Voices - All support the full language set
     Voice(
         id="Zephyr",

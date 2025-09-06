@@ -8,9 +8,7 @@ from google.genai import types
 
 
 class GoogleTTSClient(BaseTTSClient):
-    def __init__(
-        self, model: str = "gemini-2.5-flash-preview-tts", **kwargs: Any
-    ) -> None:
+    def __init__(self, model: str = "gemini-2.5-flash-preview-tts", **kwargs: Any) -> None:
         super().__init__(model=model, provider=Provider.GOOGLE, **kwargs)
         self.client = genai.Client(api_key=settings.google.api_key)
 
